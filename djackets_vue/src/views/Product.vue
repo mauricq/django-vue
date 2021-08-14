@@ -40,6 +40,7 @@ export default {
 	},
 	methods: {
 		getProduct(){
+			this.$store.commit('setIsLoading', true)
 			const category_slug = this.$route.params.category_slug
 			const product_slug = this.$route.params.product_slug
 			axios.get(`/api/v1/products/${category_slug}/${product_slug}`)
@@ -47,6 +48,10 @@ export default {
 				this.product = response.data
 			})
 			.catch({})
+			.finally(() =>{
+				this.$store.commit('setIsLoading', false)
+			})
+			
 		},
 		addToCart() {
 			if (isNaN(this.quantity) || this.quantity < 1) {
